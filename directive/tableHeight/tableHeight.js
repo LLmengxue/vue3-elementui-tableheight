@@ -3,12 +3,12 @@ import _ from "lodash";
 
 // 设置表格高度
 const doResize = (el, binding, vnode) => {
-  debugger
   // debugger;
   // 获取调用传递过来的数据 数组的数据
   const { value } = binding;
-  if (value.isTableDataComplete && !value.tableData) {
-    console.error("tableData 不能为null");
+  // && !value.tableData
+  if (!value.isTableDataComplete) {
+    console.log("tableData 为空");
     return;
   }
   // 分页的页脚高度
@@ -19,10 +19,13 @@ const doResize = (el, binding, vnode) => {
   }
 
   if (!el) return;
+  let tableSourceHeight = el.getBoundingClientRect().height;
   // 计算列表高度并设置
   const height =
     window.innerHeight - el.getBoundingClientRect().top - paginationHeight - 50;
-  el.style.height = `${value.tableData.length > 10 ? height + "px" : "auto"}`;
+  if (height < tableSourceHeight) {
+    el.style.height = `${height + "px"}`;
+  }
 };
 let debounceHandle = null;
 export default {
